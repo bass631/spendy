@@ -1,0 +1,31 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+**/target/
+**/dist/
+**/build/
+*.jar
+*.war
+*.zip
+*.tar.gz
+
+# Dependencies
+**/node_modules/
+
+# Backend dev config (contains secrets)
+**/application-dev.yml

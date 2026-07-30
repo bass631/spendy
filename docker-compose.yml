@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./spendy-backend
+    container_name: spendy-backend
+    restart: unless-stopped
+    environment: 
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - npm_net
+
+  frontend:
+    build: ./spendy-frontend
+    container_name: spendy-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - npm_net
+
+networks:
+  npm_net:
+    external: true
