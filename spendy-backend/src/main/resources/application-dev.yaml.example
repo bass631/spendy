@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: your_db_user
+    password: your_db_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: spendy
+      format_sql: true
+    show-sql: true
+auth:
+  jwt:
+    secret: your-base64-encoded-256-bit-secret
+    expiration: 14d
+  users:
+    - username: user1
+      password: "password1"
+    - username: user2
+      password: "password2"
+
+logging:
+  level:
+    root: INFO
+    dev.bass631.spendy: DEBUG
+    org.springframework.security: DEBUG
+server:
+  port: 8080
