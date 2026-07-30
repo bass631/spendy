@@ -23,6 +23,9 @@ rsync -avz --exclude='node_modules' \
            --exclude='.env' \
            --exclude='.env.*' \
            --exclude='spendy-backend/src/main/resources/application-dev.yml' \
+           --exclude='spendy-backend/src/main/resources/application-dev.yml.example' \
+           --exclude='QUICKSTART.md' \
+           --exclude='README.md' \
   ./ $REMOTE:$REMOTE_DIR/
 
 echo "Запуск docker compose на сервере..."
