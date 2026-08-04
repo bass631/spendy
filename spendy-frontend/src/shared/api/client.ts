@@ -4,7 +4,7 @@ import { useAuthStore } from '@/features/auth/store/authStore'
 import router from '@/app/router'
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ client.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken')
       if (refreshToken) {
         try {
-          const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/refresh`, {
+          const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh`, {
             refreshToken,
           })
           localStorage.setItem('accessToken', res.data.accessToken)
