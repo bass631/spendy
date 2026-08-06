@@ -77,7 +77,7 @@ function onPeriodChange(value: string) {
     <template v-else-if="data">
       <p class="statistics-total">Общая сумма: {{ data.totalAmount.toFixed(2) }}</p>
       <StatisticsChart v-if="showChart" :category-stats="data.categoryStats" />
-      <StatisticsTable v-else :category-stats="data.categoryStats" :total-amount="data.totalAmount" />
+      <StatisticsTable v-else :category-stats="data.categoryStats" :total-amount="data.totalAmount" :query="currentQuery" />
     </template>
   </div>
 </template>

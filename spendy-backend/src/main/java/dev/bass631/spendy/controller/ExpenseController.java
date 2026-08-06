@@ -7,6 +7,7 @@ import dev.bass631.spendy.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -41,8 +43,11 @@ public class ExpenseController {
     public ResponseEntity<Page<ExpenseResponse>> getExpenses(
             @RequestParam UUID categoryId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int limit) {
-        return ResponseEntity.ok(expenseService.getExpenses(categoryId, page, limit));
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        return ResponseEntity.ok(expenseService.getExpenses(categoryId, page, limit, period, from, to));
     }
 
     @PutMapping("/{id}")

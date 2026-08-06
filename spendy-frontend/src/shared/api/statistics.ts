@@ -1,6 +1,7 @@
 import client from './client'
 
 export interface CategoryStat {
+  categoryId: string
   categoryName: string
   total: number
   count: number

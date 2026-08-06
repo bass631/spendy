@@ -9,6 +9,7 @@ import dev.bass631.spendy.model.Category;
 import dev.bass631.spendy.model.Expense;
 import dev.bass631.spendy.repository.CategoryRepository;
 import dev.bass631.spendy.repository.ExpenseRepository;
+import dev.bass631.spendy.util.PeriodResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -47,8 +49,20 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional(readOnly = true)
     public Page<ExpenseResponse> getExpenses(UUID categoryId, int page, int limit) {
+        return getExpenses(categoryId, page, limit, null, null, null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ExpenseResponse> getExpenses(UUID categoryId, int page, int limit, String period, LocalDate from, LocalDate to) {
         PageRequest pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return expenseRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable)
+        if (period == null || period.isBlank()) {
+            return expenseRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable)
+                    .map(expenseMapper::toResponse);
+        }
+        LocalDateTime periodFrom = PeriodResolver.resolveFrom(period, from);
+        LocalDateTime periodTo = PeriodResolver.resolveTo(period, to);
+        return expenseRepository.findByCategoryIdAndCreatedAtBetweenOrderByCreatedAtDesc(categoryId, periodFrom, periodTo, pageable)
                 .map(expenseMapper::toResponse);
     }
 

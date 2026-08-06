@@ -16,6 +16,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
     Page<Expense> findByCategoryIdOrderByCreatedAtDesc(UUID categoryId, Pageable pageable);
 
+    Page<Expense> findByCategoryIdAndCreatedAtBetweenOrderByCreatedAtDesc(
+            UUID categoryId, LocalDateTime from, LocalDateTime to, Pageable pageable
+    );
+
     List<Expense> findByCreatedAtBetweenOrderByCreatedAtDesc(
             LocalDateTime from, LocalDateTime to
     );
@@ -32,6 +36,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
     @Query("""
             SELECT c.name AS category,
+                   c.id AS id,
                    COALESCE(SUM(e.amount), 0) AS total,
                    COUNT(e.id) AS count
             FROM Category c
@@ -49,6 +54,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
     void deleteByCategoryId(UUID categoryId);
 
     interface CategoryStatProjection {
+        UUID getId();
         String getCategory();
         BigDecimal getTotal();
         Long getCount();

@@ -25,7 +25,16 @@ export function addExpense(data: AddExpenseRequest) {
   return client.post<ExpenseResponse>('/expenses', data)
 }
 
-export function fetchExpenses(params: { categoryId?: string; page?: number; limit?: number }) {
+export interface FetchExpensesParams {
+  categoryId?: string
+  page?: number
+  limit?: number
+  period?: string
+  from?: string
+  to?: string
+}
+
+export function fetchExpenses(params: FetchExpensesParams) {
   return client.get<{ content: ExpenseResponse[]; totalElements: number; totalPages: number; number: number; last: boolean }>('/expenses', { params })
 }
 
