@@ -35,8 +35,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
                    COALESCE(SUM(e.amount), 0) AS total,
                    COUNT(e.id) AS count
             FROM Category c
-            LEFT JOIN Expense e ON e.category.id = c.id
-                AND e.createdAt >= :from
+            JOIN Expense e ON e.category.id = c.id
+            WHERE e.createdAt >= :from
                 AND e.createdAt <= :to
             GROUP BY c.id, c.name
             ORDER BY total DESC
