@@ -21,7 +21,9 @@ auth:
       password: "password1"
     - username: user2
       password: "password2"
-
+app:
+  categories:
+    popular-days: 30  # За сколько последних дней считать популярные категории
 logging:
   level:
     root: INFO

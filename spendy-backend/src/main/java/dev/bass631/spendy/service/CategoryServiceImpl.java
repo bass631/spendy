@@ -10,6 +10,7 @@ import dev.bass631.spendy.model.Category;
 import dev.bass631.spendy.repository.CategoryRepository;
 import dev.bass631.spendy.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +27,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final ExpenseRepository expenseRepository;
     private final CategoryMapper categoryMapper;
 
+    @Value("${app.categories.popular-days}")
+    private Long popularDays;
+
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponse> getCategoriesSortedByFrequency() {
-        LocalDateTime weekAgo = LocalDateTime.now().minusWeeks(1);
-        List<Category> categories = categoryRepository.findAllSortedByFrequencySince(weekAgo);
+        LocalDateTime daysAgo = LocalDateTime.now().minusDays(popularDays);
+        List<Category> categories = categoryRepository.findAllSortedByFrequencySince(daysAgo);
         return categories.stream()
                 .map(c -> categoryMapper.toResponseWithUsage(c, 0))
                 .toList();
